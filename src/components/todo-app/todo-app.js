@@ -3,13 +3,14 @@ import React, { Component } from 'react'
 import Header from '../header'
 import TodoList from '../todo-list'
 import Footer from '../footer'
+import { all, active, completed } from '../../constants'
 
 export default class TodoApp extends Component {
   maxId = 1
 
   state = {
     tasks: [],
-    filter: 'all',
+    filter: all,
   }
 
   createTodoItem(label) {
@@ -63,6 +64,9 @@ export default class TodoApp extends Component {
   }
 
   addTask = (text) => {
+    if (text.trim() === '') {
+      return
+    }
     const newTask = this.createTodoItem(text)
     this.setState(({ tasks }) => {
       const newArr = [...tasks, newTask]
@@ -74,11 +78,11 @@ export default class TodoApp extends Component {
 
   onFilter = (filter) => {
     switch (filter) {
-      case 'all':
+      case all:
         return this.state.tasks
-      case 'active':
+      case active:
         return this.state.tasks.filter((item) => !item.completed)
-      case 'completed':
+      case completed:
         return this.state.tasks.filter((item) => item.completed)
       default:
         return this.state.tasks
